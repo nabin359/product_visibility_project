@@ -1,0 +1,163 @@
+DELIVERY — CURRENT-STATE BREAKDOWN
+(Right-most section of the Product Visibility Diagram)
+The Delivery section represents the final operational ownership transfer of a package—from USPS internal custody to customer receipt (or exception). This area is deceptively small visually, but operationally dense and risk-heavy.
+1. ENTRY INTO DELIVERY DOMAIN
+“Arrival at Delivery Unit (DU)”
+What this represents
+The package has completed Destination Processing (P&DC or ASF)
+Physical custody shifts from plant/network operations to local delivery operations
+How it happens operationally
+Packages arrive at the Delivery Unit via:
+USPS surface transportation (PVS / HCR)
+Containerized mail (IMcb)
+Mixed with letters/flats in some facilities
+Visibility mechanisms shown in the diagram
+Container-level scans (IMcb)
+Trailer-level scans (99T / 99Z)
+Sometimes inferred arrival via transportation events
+Key characteristics
+Often not a piece-level scan
+Frequently calculated or inferred
+High dependency on upstream container/trailer data
+Immediate visibility risk
+Package is physically at the DU but not explicitly visible as “at unit” at the piece level
+2. DISTRIBUTION WITHIN DELIVERY UNIT
+“Distributed to Route / Carrier Sortation”
+What this represents
+Packages are sorted internally:
+To carrier routes
+To cases
+To delivery sequence
+Operational reality
+Largely manual handling
+Limited or no mandatory scan
+Happens early morning or overnight
+Visibility status (per diagram legend)
+Typically manual or unidentified
+Often not surfaced as an event
+Why this matters
+This is where a package may be:
+Physically present
+Actively worked
+Yet invisible to enterprise systems
+Typical customer symptom
+“Your package is arriving late, but tracking hasn’t updated.”
+3. OUT FOR DELIVERY (OFD)
+“Carrier Departure / Route Start”
+What this represents
+Package is assigned to a carrier and leaves the unit
+How visibility is created
+May come from:
+Manual carrier scan
+Implicit route start logic
+Device state changes (MDD / handheld)
+Diagram classification
+Often shown as:
+Manual scan OR
+Logical/calculated event
+Key constraint
+Not guaranteed
+OFD may exist logically without an explicit scan
+Visibility gap
+Many packages jump from “Arrived at Unit” directly to “Delivered” in tracking history
+4. IN-TRANSIT TO ADDRESS
+“Carrier Enroute”
+What this represents
+Carrier physically moving toward delivery point
+Visibility sources in diagram
+GPS breadcrumbing (MDD / scanner)
+Route telemetry (passive)
+Important distinction
+This is not a scan
+This is telemetry-based visibility
+Enterprise implication
+Exists as data
+Rarely surfaced cleanly in customer or enterprise reporting
+Often underutilized
+5. DELIVERY EVENT
+“Delivered” (Event Code 01)
+What this represents
+Final custody transfer to customer or recipient location
+Visibility characteristics
+Mandatory scan
+Piece-level (IMpb)
+Highest data reliability in the entire chain
+Attributes captured
+Timestamp
+Geo-location
+Delivery type:
+Front door
+Mailbox
+Parcel locker
+Left with individual
+Business closed, etc.
+Diagram status
+Fully existing
+Mature
+Enterprise-reliable
+Key reality
+Delivery is often the only guaranteed piece-level scan after acceptance
+6. DELIVERY EXCEPTIONS
+“Attempted / Failed / Alternate Outcomes”
+Examples
+No access
+Business closed
+Animal interference
+Customer hold
+Receptacle full
+Visibility
+Scan-based
+Manual
+Event codes vary
+Why this matters
+Exceptions create:
+Delays
+Redelivery loops
+Customer complaints
+Often not tied cleanly back to upstream delays
+7. POST-DELIVERY LOGICAL EVENTS
+“Logical Delivery / Confirmation / Calculated States”
+What the diagram implies
+Some delivery states are inferred, not scanned
+Examples:
+“Delivered to building”
+“Delivered to agent”
+Batch confirmations
+Visibility classification
+Logical / calculated
+Dependent on rule engines, not physical scans
+DELIVERY VISIBILITY — WHAT THE DIAGRAM IS REALLY TELLING YOU
+If you strip away the graphics, the delivery section communicates four critical truths:
+1. Delivery visibility is scan-rich at the end, but scan-poor before it
+Strong signal at “Delivered”
+Weak signal between:
+Arrival at unit
+Out for delivery
+2. Human behavior dominates this domain
+Manual scans
+Manual sortation
+Manual exception handling
+3. GPS/telemetry exists but is under-leveraged
+Passive data present
+Not consistently translated into enterprise-grade events
+4. Most “where is my package?” problems originate here
+Not because delivery failed
+But because visibility failed before delivery occurred
+HOW THIS SHOULD SHAPE YOUR TIGER TEAM START
+If you are starting from the delivery side, your first concrete actions should be:
+Define the minimum delivery-side event set
+Arrived at Unit (piece-level or reliable inference)
+Out for Delivery
+Delivered / Exception
+Inventory which of these are:
+Mandatory
+Optional
+Calculated
+Missing from DataBricks
+Measure gaps
+% of packages with Delivered but no OFD
+% with Delivered but no Arrived at Unit
+Average DU dwell time (arrival → delivery)
+Treat Delivery as your anchor
+Work backwards from Delivered
+Every upstream gap is exposed here
