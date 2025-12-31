@@ -161,3 +161,33 @@ Average DU dwell time (arrival → delivery)
 Treat Delivery as your anchor
 Work backwards from Delivered
 Every upstream gap is exposed here
+
+
+
+
+
+
+
+
+
+
+
+What each tool is fundamentally for
+
+Visio is a diagramming/documentation tool. It is designed to create and maintain static, shareable process maps (swimlanes, flowcharts, system diagrams, network diagrams) that teams can review, redline, and publish as PDFs.
+
+Simio is a discrete-event simulation and “digital twin” tool. It is designed to simulate how an operation behaves over time (queues, capacities, resource constraints, variability) and answer “what-if” questions with performance outputs (throughput, cycle time, utilization, bottleneck analysis).
+
+
+
+
+
+
+High-level comparison (decision-useful)
+Category	Visio	Simio
+Primary outcome	A standardized drawing people can review, approve, and publish	A working simulation model that produces performance results
+Best at	End-to-end maps, swimlanes, layered notation, legends, cross-references, PDF publishing	Operational behavior: queues, resources, schedules, variability, what-if scenarios
+Adding “missing elements / columns”	Strong: templates, swimlanes, containers, layers, custom stencils/masters, shape metadata	Possible but awkward if your goal is a printable reference map
+Audience accessibility	Very high: broad familiarity; easy to export/share as PDF	Lower: reviewers usually need Simio knowledge (and often access to the tool)
+Maintenance over time	Strong for “enterprise map” governance (versioning, controlled stencils, consistent notation)	Strong if you are maintaining an engineering model (validated logic + inputs)
+Typical use in ops work	Process documentation, architecture mapping, SOP visualization	Engineering analysis, facility/network simulation, capacity planning
